@@ -1,0 +1,21 @@
+{
+  "name": "Audit QMOD v5",
+  "short_name": "Audit QMOD",
+  "description": "Offline-first QMOD audit app with email auditor submissions, batch team comparison, human reconciliation and final reports.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#123b63",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
