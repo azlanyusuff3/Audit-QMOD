@@ -1,35 +1,48 @@
-Audit QMOD v5.5
-================
+Audit QMOD v5.7
 
-Production-style offline-first PWA for QMOD audits.
+Main flow
+- Perform Audit
+- Review Audit
 
-Main workflow
--------------
-1. Perform Audit: create or continue an offline audit record.
-2. Complete SOP Audit, Wireless BAS, PCS and Wired BAS checklists.
-3. Add remarks, finding category, risk rating and photo evidence.
-4. Send or save the auditor result as a .qmod package.
-5. Review Audit: batch-import .qmod results from 2–3 auditors.
-6. Compare decisions, remarks and photo evidence.
-7. Reconcile differences in a separate Final Review record.
-8. Finalise and lock the agreed result.
-9. Generate PDF/Print, Word and Excel reports.
+Repository-managed audit templates
+- SOP Audit
+- Wireless BAS
+- PCS
+- Wired BAS
 
-v5.5 changes
-------------
-- Entire user interface is in English.
-- Review Audit now includes Delete controls for individual auditor results.
-- Demo Team Data can be removed with Delete Demo Data.
-- Final Review drafts/finalised records are visible in Review Audit and can be deleted separately.
-- Back from Compare Auditor Results returns to Review Audit.
-- Imported/final records also return to Review Audit instead of Perform Audit.
-- Improved responsive layout and touch targets for phones and iPhones.
-- Separate Take Photo and Choose Photos controls for easier mobile evidence capture.
-- Local-only IndexedDB storage; no background sync or polling.
+Master template file
+- Audit_QMOD_Master_Templates.xlsx
+- This workbook is the checklist data source for new audits.
+- To publish a checklist update, edit the workbook and replace only this file in the GitHub repository. No app.js or audit-data.js change is required.
+- When a user opens Audit QMOD online, the app checks the repository workbook and caches the latest valid version for offline use.
+- Existing audits keep their own checklist snapshot for audit integrity.
+- For an in-progress POC audit, Audit Templates > Update This Audit can move the draft to the latest repository templates while keeping responses that still have the same Item ID.
 
-GitHub Pages
-------------
-Upload all files in this folder to the root of the GitHub Pages repository.
-Do not upload the containing folder itself.
+Adding another SOP
+1. Open Audit_QMOD_Master_Templates.xlsx.
+2. Duplicate the SOP Audit sheet.
+3. Rename the copied sheet so its name starts with `SOP -` (example: SOP - Complaint).
+4. Change Template ID, Template Name, Version and checklist rows.
+5. Upload/replace Audit_QMOD_Master_Templates.xlsx in the GitHub repository.
+6. Users opening Audit QMOD online will receive the new SOP automatically.
 
-The PWA remains offline-first after the first successful online load.
+Template rules
+- Keep the core sheet names: SOP Audit, Wireless BAS, PCS, Wired BAS.
+- Keep existing Item IDs stable when only changing wording.
+- Use a new unique Item ID for a new requirement.
+- Active = No hides a row.
+- Existing audit records and .qmod submissions preserve the template snapshot used for that audit.
+- Team comparison blocks records created from different template fingerprints.
+
+Final Review dashboard
+- Overall Audit Result with section compliance for all four modules.
+- Key Finding Summary generated from reconciled Not Complied items.
+- Conclusion generated from final compliance and risk.
+- The same summary is included in final Word/PDF and the Excel Summary sheet.
+
+Offline / battery
+- IndexedDB local storage
+- No realtime sync or background polling
+- Repository template check only on app open, New Audit, or Check for Updates
+- Photos compressed before storage
+- PWA service worker caches the latest valid master workbook for offline use

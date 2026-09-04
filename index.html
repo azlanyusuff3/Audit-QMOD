@@ -14,7 +14,7 @@
     *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}button,input,select,textarea{font:inherit}
     .topbar{position:sticky;top:0;z-index:20;background:rgba(18,59,99,.97);color:white;padding:max(12px,env(safe-area-inset-top)) 16px 12px;box-shadow:0 4px 16px rgba(0,0,0,.12)}
     .topbar-inner{max-width:1180px;margin:auto;display:flex;align-items:center;gap:10px}.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;white-space:nowrap}.brand img{width:34px;height:34px;border-radius:8px}.top-spacer{flex:1}.sync-pill{font-size:11px;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.12);white-space:nowrap}.sync-pill.ok{background:rgba(8,122,85,.45)}.sync-pill.warn{background:rgba(181,71,8,.5)}
-    .icon-btn,.btn{border:0;border-radius:12px;cursor:pointer;min-height:42px}.icon-btn{background:rgba(255,255,255,.12);color:white;padding:8px 12px}.btn{padding:10px 15px;font-weight:700}.btn.primary{background:var(--navy);color:#fff}.btn.gold{background:var(--gold);color:#172033}.btn.light{background:#eef3f7;color:var(--navy)}.btn.danger{background:#fff0ef;color:var(--bad)}.btn.outline{background:#fff;border:1px solid var(--line);color:var(--text)}.btn.small{min-height:34px;padding:7px 10px;font-size:12px}
+    .icon-btn,.btn{border:0;border-radius:12px;cursor:pointer;min-height:42px}.icon-btn{background:rgba(255,255,255,.12);color:white;padding:8px 12px}.btn{padding:10px 15px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.btn.primary{background:var(--navy);color:#fff}.btn.gold{background:var(--gold);color:#172033}.btn.light{background:#eef3f7;color:var(--navy)}.btn.danger{background:#fff0ef;color:var(--bad)}.btn.outline{background:#fff;border:1px solid var(--line);color:var(--text)}.btn.small{min-height:34px;padding:7px 10px;font-size:12px}
     .container{max-width:1180px;margin:auto;padding:22px 16px 96px}.hero{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-bottom:18px}.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.hero-main{padding:24px;background:linear-gradient(135deg,#123b63,#1d5b8f);color:white;border:0}.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;opacity:.75}.hero h1{margin:7px 0 8px;font-size:30px}.hero p{margin:0;opacity:.86;line-height:1.55}.hero-meta{padding:20px}.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.meta{background:var(--soft);border-radius:12px;padding:11px}.meta b{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}.meta span{font-weight:700;word-break:break-word}.hero-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
     .section-title{display:flex;align-items:end;justify-content:space-between;gap:14px;margin:23px 0 12px}.section-title h2{margin:0;font-size:20px}.section-title p{margin:4px 0 0;color:var(--muted);font-size:13px}
     .modules{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.module-card{padding:18px;cursor:pointer;transition:.18s transform,.18s box-shadow;border-top:4px solid var(--navy)}.module-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(16,24,40,.11)}.module-icon{width:42px;height:42px;border-radius:12px;background:#eaf1f7;display:grid;place-items:center;font-size:21px;margin-bottom:16px}.module-card h3{margin:0 0 6px;font-size:17px}.module-card p{margin:0;color:var(--muted);font-size:13px;min-height:38px;line-height:1.45}.progress-row{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:16px}.bar{height:7px;background:#e9edf2;border-radius:999px;overflow:hidden;margin-top:7px}.bar>i{display:block;height:100%;background:var(--good);width:0}.counts{display:flex;gap:8px;margin-top:12px;font-size:11px}.count{padding:5px 7px;border-radius:999px;background:#f2f4f7}.count.bad{color:var(--bad);background:#fff1f0}.count.good{color:var(--good);background:#ecfdf3}
@@ -66,7 +66,7 @@
 
     .drive-mode{border:0;color:#fff;cursor:pointer}.cloud-card{padding:16px}.cloud-card.selected{outline:2px solid #7f56d9}.cloud-meta{font-size:11px;color:var(--muted);line-height:1.5}.cloud-actions{display:flex;gap:8px;flex-wrap:wrap}.cloud-banner{padding:13px 15px;border:1px solid #c7d7fe;background:#f5f8ff;border-radius:14px;margin-bottom:14px}.cloud-banner b{color:var(--navy)}.cloud-banner p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.45}.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.setup-note{font-size:11px;color:var(--muted);line-height:1.5}.remote-badge{display:inline-flex;padding:5px 8px;border-radius:999px;background:#eef4ff;color:#3538cd;font-size:10px;font-weight:800}.submit-ok{color:var(--good);font-weight:700}@media(max-width:700px){.setup-grid{grid-template-columns:1fr}}
 
-    /* v5.5 mobile / iPhone optimisation */
+    /* v5.7 mobile / iPhone optimisation */
     html{-webkit-text-size-adjust:100%}button,.landing-card,.chip,.status,.details-toggle{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
     .photo-action{min-height:44px}.photo img{image-orientation:from-image}
     @media(max-width:640px){
@@ -92,11 +92,15 @@
       .landing-wrap{width:100%}.landing-actions{grid-template-columns:1fr}.landing-card{min-height:150px}
     }
     @media(max-width:390px){.summary-grid,.overview-grid{grid-template-columns:1fr 1fr}.photo-tools{grid-template-columns:1fr}.record-actions{grid-template-columns:1fr}.status-buttons{grid-template-columns:1fr}.status{font-size:11px}.brand{font-size:16px}}
+
+  .overall-result{margin:18px 0 22px}.overall-title{display:flex;align-items:center;background:#8fb583;color:#fff;font-weight:800;font-size:18px;padding:10px 14px;border-radius:28px;max-width:760px}.overall-title span{display:inline-flex;width:28px;height:28px;border-radius:50%;background:#fff;color:#6f9866;align-items:center;justify-content:center;margin-right:8px;flex:0 0 auto}.result-modules{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px}.result-module{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px;min-width:0}.result-module h3{text-align:center;font-size:13px;margin:0 0 12px;color:#475467}.result-row{display:grid;grid-template-columns:minmax(90px,42%) 1fr;gap:6px;align-items:center;margin:8px 0}.result-label{font-size:10px;line-height:1.2;color:#667085}.result-track{height:24px;background:#f2f4f7;border-radius:4px;overflow:hidden;position:relative}.result-bar{height:100%;background:#df2a91}.result-track span{position:absolute;right:5px;top:5px;font-size:9px;color:#344054}.result-summary{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;font-size:13px}.result-summary ul{margin:6px 0 14px 20px;padding:0}.result-summary li{margin:5px 0}.result-summary p{margin:5px 0 14px}.template-note{font-size:11px;color:#667085}
+  @media(max-width:900px){.result-modules{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.result-modules{grid-template-columns:1fr}.overall-title{font-size:15px;border-radius:18px;align-items:flex-start}.result-row{grid-template-columns:40% 1fr}.result-module{padding:12px}.result-track{height:26px}}
 </style>
 </head>
 <body>
   <header class="topbar"><div class="topbar-inner">
-    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span><span style="font-size:10px;font-weight:800;background:rgba(255,255,255,.16);padding:4px 7px;border-radius:999px">v5.5</span></div>
+    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span><span style="font-size:10px;font-weight:800;background:rgba(255,255,255,.16);padding:4px 7px;border-radius:999px">v5.7</span></div>
     <div class="top-spacer"></div>
     <button class="icon-btn" id="auditInfoBtn" style="display:none" onclick="openInfo()">Audit Info</button>
   </div></header>
@@ -108,19 +112,20 @@
   <div class="toast" id="toast"></div>
   <input type="file" id="backupFile" accept="application/json" hidden onchange="importBackup(event)">
   <input type="file" id="submissionFile" accept=".qmod,application/json" multiple hidden onchange="importAuditorSubmissions(event)">
-  <script src="audit-data.js?v=5.5"></script>
-  <script src="app.js?v=5.5"></script>
+  <input type="file" id="sopTemplateFile" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden onchange="importSopTemplate(event)">
+  <script src="audit-data.js?v=5.7"></script>
+  <script src="app.js?v=5.7"></script>
 
   <script>
-  // Audit QMOD v5.5: explicitly install the current worker so old PWA caches cannot keep the UI stuck.
+  // Audit QMOD v5.7: explicitly install the current worker so old PWA caches cannot keep the UI stuck.
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg = await navigator.serviceWorker.register('./sw.js?v=5.5', { scope: './', updateViaCache: 'none' });
+        const reg = await navigator.serviceWorker.register('./sw.js?v=5.7', { scope: './', updateViaCache: 'none' });
         await reg.update();
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!sessionStorage.getItem('aqmod-sw-reloaded-v55')) {
-            sessionStorage.setItem('aqmod-sw-reloaded-v55','1');
+          if (!sessionStorage.getItem('aqmod-sw-reloaded-v57')) {
+            sessionStorage.setItem('aqmod-sw-reloaded-v57','1');
             location.reload();
           }
         });
