@@ -65,11 +65,38 @@
     @media(max-width:560px){.overview-grid{grid-template-columns:1fr 1fr}.compare-bar{bottom:6px}.source-card{padding:10px}}
 
     .drive-mode{border:0;color:#fff;cursor:pointer}.cloud-card{padding:16px}.cloud-card.selected{outline:2px solid #7f56d9}.cloud-meta{font-size:11px;color:var(--muted);line-height:1.5}.cloud-actions{display:flex;gap:8px;flex-wrap:wrap}.cloud-banner{padding:13px 15px;border:1px solid #c7d7fe;background:#f5f8ff;border-radius:14px;margin-bottom:14px}.cloud-banner b{color:var(--navy)}.cloud-banner p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.45}.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.setup-note{font-size:11px;color:var(--muted);line-height:1.5}.remote-badge{display:inline-flex;padding:5px 8px;border-radius:999px;background:#eef4ff;color:#3538cd;font-size:10px;font-weight:800}.submit-ok{color:var(--good);font-weight:700}@media(max-width:700px){.setup-grid{grid-template-columns:1fr}}
+
+    /* v5.5 mobile / iPhone optimisation */
+    html{-webkit-text-size-adjust:100%}button,.landing-card,.chip,.status,.details-toggle{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+    .photo-action{min-height:44px}.photo img{image-orientation:from-image}
+    @media(max-width:640px){
+      .topbar{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+      .topbar-inner{gap:7px}.brand{font-size:17px}.brand img{width:30px;height:30px}
+      .container{padding:14px max(10px,env(safe-area-inset-right)) calc(100px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))}
+      .module-head{display:grid;grid-template-columns:42px 1fr;gap:10px;align-items:start}.module-head>div:nth-child(2){min-width:0}.module-head h1{font-size:22px}.module-head p{font-size:12px;line-height:1.4}
+      .module-tools{grid-column:1/-1;margin-left:0!important;width:100%;display:grid;grid-template-columns:1fr;gap:8px}.module-tools .btn{width:100%;min-height:46px}
+      .summary-grid{grid-template-columns:1fr 1fr}.kpi{padding:14px}.kpi .n{font-size:25px}
+      .status-buttons{grid-column:1/-1!important;width:100%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.status{min-height:44px;padding:8px 5px;font-size:10px}
+      .check-top{grid-template-columns:36px 1fr}.check-text{font-size:14px}.expected{font-size:11px}
+      .field input,.field select,.field textarea{font-size:16px;min-height:44px}.field textarea{min-height:96px}
+      .photo-tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}.photo-tools .photo-note{grid-column:1/-1}.photo-action{width:100%;font-size:12px}
+      .photos{display:grid;grid-template-columns:1fr 1fr;gap:8px}.photo{width:100%}.photo img{width:100%;height:120px}
+      .record-actions,.source-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:7px}.record-actions .btn,.source-actions .btn{width:100%;min-height:42px}
+      .source-grid{grid-template-columns:1fr}.source-card{padding:13px}.source-card h4{font-size:14px}.source-card .meta-line{font-size:12px;line-height:1.45}
+      .overview-grid{grid-template-columns:1fr 1fr}.overview-card{padding:11px}.overview-card .big{font-size:19px}
+      .compare-item{padding:12px;border-radius:14px}.compare-item .qhead{gap:8px}.compare-item .qhead h3{font-size:13px}
+      .compare-bar{display:grid;grid-template-columns:1fr;gap:8px;bottom:calc(6px + env(safe-area-inset-bottom));padding:10px}.compare-bar>div:last-child{display:grid;grid-template-columns:1fr 1fr;gap:7px}.compare-bar .btn{width:100%}
+      .sticky-tools{top:calc(58px + env(safe-area-inset-top))}
+      .modal{align-items:flex-end;padding:0}.modal-card{width:100%;max-height:92dvh;border-radius:20px 20px 0 0;padding:18px 14px calc(18px + env(safe-area-inset-bottom))}.modal-actions{display:grid;grid-template-columns:1fr 1fr}.modal-actions .btn{width:100%;min-height:46px}
+      .lightbox{padding:10px}.lightbox .closebox{top:calc(10px + env(safe-area-inset-top));right:10px}
+      .landing-wrap{width:100%}.landing-actions{grid-template-columns:1fr}.landing-card{min-height:150px}
+    }
+    @media(max-width:390px){.summary-grid,.overview-grid{grid-template-columns:1fr 1fr}.photo-tools{grid-template-columns:1fr}.record-actions{grid-template-columns:1fr}.status-buttons{grid-template-columns:1fr}.status{font-size:11px}.brand{font-size:16px}}
 </style>
 </head>
 <body>
   <header class="topbar"><div class="topbar-inner">
-    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span><span style="font-size:10px;font-weight:800;background:rgba(255,255,255,.16);padding:4px 7px;border-radius:999px">v5.4</span></div>
+    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span><span style="font-size:10px;font-weight:800;background:rgba(255,255,255,.16);padding:4px 7px;border-radius:999px">v5.5</span></div>
     <div class="top-spacer"></div>
     <button class="icon-btn" id="auditInfoBtn" style="display:none" onclick="openInfo()">Audit Info</button>
   </div></header>
@@ -81,19 +108,19 @@
   <div class="toast" id="toast"></div>
   <input type="file" id="backupFile" accept="application/json" hidden onchange="importBackup(event)">
   <input type="file" id="submissionFile" accept=".qmod,application/json" multiple hidden onchange="importAuditorSubmissions(event)">
-  <script src="audit-data.js?v=5.3"></script>
-  <script src="app.js?v=5.3"></script>
+  <script src="audit-data.js?v=5.5"></script>
+  <script src="app.js?v=5.5"></script>
 
   <script>
-  // Audit QMOD v5.4: explicitly install the current worker so old PWA caches cannot keep the UI stuck.
+  // Audit QMOD v5.5: explicitly install the current worker so old PWA caches cannot keep the UI stuck.
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg = await navigator.serviceWorker.register('./sw.js?v=5.3', { scope: './', updateViaCache: 'none' });
+        const reg = await navigator.serviceWorker.register('./sw.js?v=5.5', { scope: './', updateViaCache: 'none' });
         await reg.update();
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!sessionStorage.getItem('aqmod-sw-reloaded-v53')) {
-            sessionStorage.setItem('aqmod-sw-reloaded-v53','1');
+          if (!sessionStorage.getItem('aqmod-sw-reloaded-v55')) {
+            sessionStorage.setItem('aqmod-sw-reloaded-v55','1');
             location.reload();
           }
         });
