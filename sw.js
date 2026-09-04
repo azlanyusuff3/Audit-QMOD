@@ -1,4 +1,4 @@
-const CACHE='audit-qmod-v5.3-dashboard';
+const CACHE='audit-qmod-v5.4-dashboard';
 const SHELL=['./index.html','./app.js?v=5.3','./audit-data.js?v=5.3','./manifest.json','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install', event => {
