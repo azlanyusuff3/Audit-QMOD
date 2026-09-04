@@ -55,7 +55,7 @@
 </head>
 <body>
   <header class="topbar"><div class="topbar-inner">
-    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span></div>
+    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span><span style="font-size:10px;font-weight:800;background:rgba(255,255,255,.16);padding:4px 7px;border-radius:999px">v5.2</span></div>
     <div class="top-spacer"></div>
     <span class="mode-pill">Email → azlan.yusuff@mcmc.gov.my</span>
     <button class="icon-btn" id="auditInfoBtn" style="display:none" onclick="openInfo()">Audit Info</button>
@@ -68,7 +68,25 @@
   <div class="toast" id="toast"></div>
   <input type="file" id="backupFile" accept="application/json" hidden onchange="importBackup(event)">
   <input type="file" id="submissionFile" accept=".qmod,application/json" multiple hidden onchange="importAuditorSubmissions(event)">
-  <script src="audit-data.js"></script>
-  <script src="app.js"></script>
+  <script src="audit-data.js?v=5.2"></script>
+  <script src="app.js?v=5.2"></script>
+
+  <script>
+  // Audit QMOD v5.2: explicitly install the current worker so old PWA caches cannot keep the UI stuck.
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', async () => {
+      try {
+        const reg = await navigator.serviceWorker.register('./sw.js?v=5.2', { scope: './', updateViaCache: 'none' });
+        await reg.update();
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (!sessionStorage.getItem('aqmod-sw-reloaded-v52')) {
+            sessionStorage.setItem('aqmod-sw-reloaded-v52','1');
+            location.reload();
+          }
+        });
+      } catch (e) { console.warn('Audit QMOD service worker update failed', e); }
+    });
+  }
+  </script>
 </body>
 </html>

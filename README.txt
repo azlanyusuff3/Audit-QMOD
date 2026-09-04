@@ -1,3 +1,5 @@
+Audit QMOD v5.2 — Direct Dashboard + Forced PWA Cache Update
+
 Audit QMOD v5 — Offline Audit + Email Team Review
 
 MAIN FLOW
