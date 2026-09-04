@@ -1,3 +1,7 @@
+Audit QMOD v5.3
+
+Landing dashboard simplified to two choices: Buat Audit / Review Audit. Email recipient remains internal and is not displayed in the app UI.
+
 Audit QMOD v5.2 — Direct Dashboard + Forced PWA Cache Update
 
 Audit QMOD v5 — Offline Audit + Email Team Review

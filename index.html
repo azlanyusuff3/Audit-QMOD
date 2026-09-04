@@ -29,8 +29,22 @@
     .modal{position:fixed;inset:0;background:rgba(12,22,35,.58);z-index:50;display:none;align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}.modal-card{background:#fff;width:min(760px,100%);max-height:90vh;overflow:auto;border-radius:18px;padding:22px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.modal-head h2{margin:0}.close{border:0;background:#f2f4f7;border-radius:10px;width:38px;height:38px;cursor:pointer}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}.callout{border:1px solid #d8e4ee;background:#f4f8fb;border-radius:13px;padding:12px;font-size:12px;color:#475467;line-height:1.5;margin:10px 0}
     .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#172033;color:#fff;padding:10px 14px;border-radius:999px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:99}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
     .footer-note{text-align:center;color:var(--muted);font-size:11px;margin-top:26px}
+
+    .landing{min-height:calc(100vh - 170px);display:flex;align-items:center;justify-content:center;padding:20px 0 36px}
+    .landing-wrap{width:min(880px,100%);text-align:center}
+    .landing-logo{width:74px;height:74px;border-radius:20px;box-shadow:var(--shadow);margin-bottom:14px}
+    .landing h1{font-size:34px;margin:0 0 8px;color:var(--navy)}
+    .landing-sub{color:var(--muted);margin:0 auto 26px;max-width:560px;line-height:1.55}
+    .landing-actions{display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:left}
+    .landing-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow);cursor:pointer;transition:.18s transform,.18s box-shadow;min-height:190px;display:flex;flex-direction:column}
+    .landing-card:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(16,24,40,.12)}
+    .landing-card .lc-icon{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;background:#eaf1f7;font-size:24px;margin-bottom:18px}
+    .landing-card h2{margin:0 0 8px;font-size:22px;color:var(--navy)}
+    .landing-card p{margin:0;color:var(--muted);line-height:1.5;font-size:13px}
+    .landing-card .lc-go{margin-top:auto;padding-top:18px;font-weight:800;color:var(--navy)}
+    .page-kicker{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800;margin-bottom:3px}
     @media(max-width:900px){.hero{grid-template-columns:1fr}.modules,.summary-grid{grid-template-columns:repeat(2,1fr)}.record-grid{grid-template-columns:repeat(2,1fr)}.check-top{grid-template-columns:36px 1fr}.status-buttons{grid-column:2;justify-content:flex-start}.finding-row{grid-template-columns:100px 1fr}.finding-row>:nth-child(3),.finding-row>:nth-child(4){grid-column:2}.module-tools{width:100%;margin-left:54px}.module-head{flex-wrap:wrap}}
-    @media(max-width:560px){.container{padding:14px 12px 90px}.modules,.summary-grid,.record-grid{grid-template-columns:1fr 1fr;gap:9px}.record-grid{grid-template-columns:1fr}.module-card{padding:14px}.hero-main{padding:20px}.hero h1{font-size:25px}.meta-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.topbar .hide-mobile{display:none}.sticky-tools{top:63px}.check-card{padding:12px}.modules .module-card p{display:none}.finding-row{grid-template-columns:1fr}.finding-row>*{grid-column:1!important}.sync-pill{display:none}}
+    @media(max-width:560px){.landing{min-height:calc(100vh - 130px);padding-top:8px}.landing h1{font-size:29px}.landing-actions{grid-template-columns:1fr}.landing-card{min-height:160px;padding:20px}.container{padding:14px 12px 90px}.modules,.summary-grid,.record-grid{grid-template-columns:1fr 1fr;gap:9px}.record-grid{grid-template-columns:1fr}.module-card{padding:14px}.hero-main{padding:20px}.hero h1{font-size:25px}.meta-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.topbar .hide-mobile{display:none}.sticky-tools{top:63px}.check-card{padding:12px}.modules .module-card p{display:none}.finding-row{grid-template-columns:1fr}.finding-row>*{grid-column:1!important}.sync-pill{display:none}}
     @media print{body{background:white}.topbar,#app{display:none!important}}
   
     .mode-pill{font-size:11px;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.12);white-space:nowrap}
@@ -55,9 +69,8 @@
 </head>
 <body>
   <header class="topbar"><div class="topbar-inner">
-    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span><span style="font-size:10px;font-weight:800;background:rgba(255,255,255,.16);padding:4px 7px;border-radius:999px">v5.2</span></div>
+    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span><span style="font-size:10px;font-weight:800;background:rgba(255,255,255,.16);padding:4px 7px;border-radius:999px">v5.3</span></div>
     <div class="top-spacer"></div>
-    <span class="mode-pill">Email → azlan.yusuff@mcmc.gov.my</span>
     <button class="icon-btn" id="auditInfoBtn" style="display:none" onclick="openInfo()">Audit Info</button>
   </div></header>
   <main class="container" id="app"></main>
@@ -68,19 +81,19 @@
   <div class="toast" id="toast"></div>
   <input type="file" id="backupFile" accept="application/json" hidden onchange="importBackup(event)">
   <input type="file" id="submissionFile" accept=".qmod,application/json" multiple hidden onchange="importAuditorSubmissions(event)">
-  <script src="audit-data.js?v=5.2"></script>
-  <script src="app.js?v=5.2"></script>
+  <script src="audit-data.js?v=5.3"></script>
+  <script src="app.js?v=5.3"></script>
 
   <script>
-  // Audit QMOD v5.2: explicitly install the current worker so old PWA caches cannot keep the UI stuck.
+  // Audit QMOD v5.3: explicitly install the current worker so old PWA caches cannot keep the UI stuck.
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg = await navigator.serviceWorker.register('./sw.js?v=5.2', { scope: './', updateViaCache: 'none' });
+        const reg = await navigator.serviceWorker.register('./sw.js?v=5.3', { scope: './', updateViaCache: 'none' });
         await reg.update();
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!sessionStorage.getItem('aqmod-sw-reloaded-v52')) {
-            sessionStorage.setItem('aqmod-sw-reloaded-v52','1');
+          if (!sessionStorage.getItem('aqmod-sw-reloaded-v53')) {
+            sessionStorage.setItem('aqmod-sw-reloaded-v53','1');
             location.reload();
           }
         });
