@@ -1,11 +1,11 @@
 {
-  "name": "Audit QMOD v5.7",
+  "name": "Audit QMOD v5.8",
   "short_name": "Audit QMOD",
   "description": "Offline-first QMOD audit app with SOP-specific templates, Wireless BAS, PCS, Wired BAS, photo evidence and team review.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f5f7fb",
-  "theme_color": "#123b63",
+  "background_color": "#f1f4f7",
+  "theme_color": "#0b2f4f",
   "icons": [
     {
       "src": "icon-192.png",

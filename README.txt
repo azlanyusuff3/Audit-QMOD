@@ -1,4 +1,4 @@
-Audit QMOD v5.7
+Audit QMOD v5.8
 
 Main flow
 - Perform Audit
@@ -46,3 +46,6 @@ Offline / battery
 - Repository template check only on app open, New Audit, or Check for Updates
 - Photos compressed before storage
 - PWA service worker caches the latest valid master workbook for offline use
+
+
+v5.8 UI release: visual-only redesign. Audit workflow, template loading, storage, evidence capture, team comparison, reconciliation and report logic are unchanged from v5.7.
