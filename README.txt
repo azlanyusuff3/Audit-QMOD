@@ -1,4 +1,4 @@
-Audit QMOD v5.8
+Audit QMOD v5.10
 
 Main flow
 - Perform Audit
@@ -48,4 +48,19 @@ Offline / battery
 - PWA service worker caches the latest valid master workbook for offline use
 
 
-v5.8 UI release: visual-only redesign. Audit workflow, template loading, storage, evidence capture, team comparison, reconciliation and report logic are unchanged from v5.7.
+v5.10 UI release: visual-only redesign. Audit workflow, template loading, storage, evidence capture, team comparison, reconciliation and report logic are unchanged from v5.7.
+
+
+v5.10 review logic:
+- A single auditor result can create a Final Review and proceed to final report.
+- Any number of auditor results from the same audit session can be compared together; the previous 3-auditor limit is removed.
+- Single-source Final Review pre-fills the auditor's decisions, findings and photo evidence.
+
+v5.10 source-workbook alignment:
+- Removed Finding Category and Risk Rating from the audit/review/report UI because those fields are not in the source audit workbook.
+- Evidence Expected is always visible and highlighted on every checklist item.
+- Evidence Link / Reference, Auditor Remark and Remark align with the original audit-form columns.
+- SOP Audit uses one Remark field; Wireless BAS, PCS and Wired BAS retain Auditor Remark + Remark.
+- Final report quality gate now requires checklist decisions to be completed; no custom risk/category fields are required.
+- Added a floating Top button on audit checklist pages for long mobile/desktop checklists.
+- Repository Excel templates now visibly include blank Status / Evidence Link / Auditor Remark / Remark columns while responses remain stored in the app.
