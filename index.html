@@ -49,7 +49,7 @@
   
     .mode-pill{font-size:11px;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.12);white-space:nowrap}
     .team-panel{padding:18px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.step{background:var(--soft);border-radius:14px;padding:13px}.step b{display:block;color:var(--navy);margin-bottom:5px}.step span{font-size:12px;color:var(--muted);line-height:1.45}
-    .record.final{border-top:4px solid var(--gold)}.record.imported{border-left:4px solid #7f56d9}.record-select{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);margin-top:12px}.badge{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;background:#eef3f7;color:var(--navy);font-size:10px;font-weight:800;margin-right:5px}.badge.final{background:#fff7dc;color:#7a5a00}.badge.locked{background:#ecfdf3;color:var(--good)}.badge.imported{background:#f4ebff;color:#6941c6}
+    .record.final{border-top:4px solid var(--gold)}.record.imported{border-left:4px solid #7f56d9}.record-select{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);margin-top:12px}.badge{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;background:#eef3f7;color:var(--navy);font-size:10px;font-weight:800;margin-right:5px}.badge.final{background:#fff7dc;color:#7a5a00}.badge.locked{background:#ecfdf3;color:var(--good)}.badge.imported{background:#f4ebff;color:#6941c6}.badge.merged{background:#e8f6ff;color:#175a7a;border-color:#c9e7f5}
     .compare-bar{position:sticky;bottom:10px;z-index:18;margin-top:16px;padding:12px 14px;display:flex;align-items:center;gap:10px;justify-content:space-between}.compare-bar .smalltxt{font-size:12px;color:var(--muted)}
     .source-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.source-card{border:1px solid var(--line);border-radius:13px;padding:11px;background:#fff}.source-card h4{margin:0 0 5px;font-size:13px}.source-card .meta-line{font-size:11px;color:var(--muted);margin-top:4px}.source-card .source-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
     .status-tag{display:inline-block;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:850;background:#f2f4f7;color:#475467}.status-tag.good{background:#ecfdf3;color:var(--good)}.status-tag.bad{background:#fff1f0;color:var(--bad)}.status-tag.na{background:#f2f4f7;color:#475467}.status-tag.pending{background:#fff6ed;color:var(--warn)}
@@ -208,7 +208,7 @@
 </head>
 <body>
   <header class="topbar"><div class="topbar-inner">
-    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span><span style="font-size:10px;font-weight:800;background:rgba(255,255,255,.16);padding:4px 7px;border-radius:999px">v5.10</span></div>
+    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span><span style="font-size:10px;font-weight:800;background:rgba(255,255,255,.16);padding:4px 7px;border-radius:999px">v5.11.1</span></div>
     <div class="top-spacer"></div>
     <button class="icon-btn" id="auditInfoBtn" style="display:none" onclick="openInfo()">Audit Info</button>
   </div></header>
@@ -220,20 +220,21 @@
   <div class="toast" id="toast"></div>
   <input type="file" id="backupFile" accept="application/json" hidden onchange="importBackup(event)">
   <input type="file" id="submissionFile" accept=".qmod,application/json" multiple hidden onchange="importAuditorSubmissions(event)">
+  <input type="file" id="partialMergeFile" accept=".qmod,application/json" multiple hidden onchange="mergePartialAuditFiles(event)">
   <input type="file" id="sopTemplateFile" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden onchange="importSopTemplate(event)">
-  <script src="audit-data.js?v=5.10"></script>
-  <script src="app.js?v=5.10"></script>
+  <script src="audit-data.js?v=5.11.1"></script>
+  <script src="app.js?v=5.11.1"></script>
 
   <script>
-  // Audit QMOD v5.10: explicitly install the current worker so old PWA caches cannot keep the UI stuck.
+  // Audit QMOD v5.11.1: explicitly install the current worker so old PWA caches cannot keep the UI stuck.
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg = await navigator.serviceWorker.register('./sw.js?v=5.10', { scope: './', updateViaCache: 'none' });
+        const reg = await navigator.serviceWorker.register('./sw.js?v=5.11.1', { scope: './', updateViaCache: 'none' });
         await reg.update();
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!sessionStorage.getItem('aqmod-sw-reloaded-v58')) {
-            sessionStorage.setItem('aqmod-sw-reloaded-v58','1');
+          if (!sessionStorage.getItem('aqmod-sw-reloaded-v511')) {
+            sessionStorage.setItem('aqmod-sw-reloaded-v511','1');
             location.reload();
           }
         });

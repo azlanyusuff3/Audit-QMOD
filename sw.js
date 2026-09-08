@@ -1,6 +1,6 @@
-const CACHE='audit-qmod-v5.10';
+const CACHE='audit-qmod-v5.11.1';
 const MASTER='./Audit_QMOD_Master_Templates.xlsx';
-const SHELL=['./index.html','./app.js?v=5.10','./audit-data.js?v=5.10','./manifest.json','./icon-192.png','./icon-512.png',MASTER,'./Audit_QMOD_SOP_Template.xlsx'];
+const SHELL=['./index.html','./app.js?v=5.11.1','./audit-data.js?v=5.11.1','./manifest.json','./icon-192.png','./icon-512.png',MASTER,'./Audit_QMOD_SOP_Template.xlsx'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));

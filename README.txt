@@ -1,4 +1,4 @@
-Audit QMOD v5.10
+Audit QMOD v5.11.1
 
 Main flow
 - Perform Audit
@@ -64,3 +64,15 @@ v5.10 source-workbook alignment:
 - Final report quality gate now requires checklist decisions to be completed; no custom risk/category fields are required.
 - Added a floating Top button on audit checklist pages for long mobile/desktop checklists.
 - Repository Excel templates now visibly include blank Status / Evidence Link / Auditor Remark / Remark columns while responses remain stored in the app.
+
+
+v5.11.1 partial-audit merge:
+- Added Review Audit > Merge Partial Audit.
+- Select 2 or more existing .qmod / Audit QMOD JSON files from the same audit session.
+- Intended workflow: SOP Audit on laptop + Wireless BAS / PCS / Wired BAS on phone.
+- The app creates ONE new editable auditor record; original files remain unchanged.
+- Old v5.10 .qmod files remain readable. No data-format migration is required.
+- Merge preserves non-overlapping answers, evidence, remarks and photo evidence.
+- If the same field was edited differently in more than one file, the most recently updated value is kept and the merged record is flagged for review.
+- Merge is blocked when State Office, Year, Audit Document or checklist template fingerprints do not match. Audit Date may differ between source files (for example an audit spanning 2–3 days). The merged record uses the earliest source date as its main Audit Date and keeps every original source date in merge history.
+- IndexedDB database name is unchanged, so existing local records remain available after updating the PWA files.
