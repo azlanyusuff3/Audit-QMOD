@@ -1,4 +1,4 @@
-Audit QMOD v5.11.1
+Audit QMOD v5.12
 
 Main flow
 - Perform Audit
@@ -76,3 +76,14 @@ v5.11.1 partial-audit merge:
 - If the same field was edited differently in more than one file, the most recently updated value is kept and the merged record is flagged for review.
 - Merge is blocked when State Office, Year, Audit Document or checklist template fingerprints do not match. Audit Date may differ between source files (for example an audit spanning 2–3 days). The merged record uses the earliest source date as its main Audit Date and keeps every original source date in merge history.
 - IndexedDB database name is unchanged, so existing local records remain available after updating the PWA files.
+
+
+v5.12 editable Review Audit:
+- Final Review draft is editable before Finalise & Lock.
+- Reviewer can edit/add Evidence Link / Reference, Auditor Remark / Remark and checklist status.
+- Reviewer can take a new photo or choose photos directly inside Final Reconciliation.
+- Existing final-review photos can be replaced or removed.
+- Source auditor submissions remain read-only and unchanged for traceability.
+- Every correction made to a Final Review item records an `Edited during review` timestamp and a review edit history.
+- Final Excel/Word/PDF checklist output includes the latest review-edit timestamp for affected items.
+- All v5.11.1 partial-audit merge behavior and existing IndexedDB data remain compatible.

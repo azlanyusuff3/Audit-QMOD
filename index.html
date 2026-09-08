@@ -204,11 +204,16 @@
     .scroll-top-btn{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:80;border:1px solid #c9d6df;background:#123b63;color:#fff;box-shadow:0 8px 24px rgba(18,59,99,.22);border-radius:999px;min-height:44px;padding:0 15px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px}
     .scroll-top-btn:hover{background:#0d3154}
     @media(max-width:560px){.scroll-top-btn{right:12px;bottom:calc(12px + env(safe-area-inset-bottom));min-width:48px;padding:0 13px}.scroll-top-btn span{display:none}.evidence-expected-box{font-size:11px}}
+
+    /* v5.12: editable final review + traceable review corrections */
+    .photo-replace{display:block;width:100%;border:0;background:#eef6fb;color:#174865;border-radius:7px;padding:4px;cursor:pointer;font-size:10px;font-weight:800;text-align:center;margin-bottom:4px}
+    .review-edit-stamp{margin-top:8px;padding:7px 9px;border-radius:9px;background:#fff8e8;border:1px solid #f0d79b;color:#76570f;font-size:10px;font-weight:800}
+    .review-trail{border-left:4px solid #d8a928}
 </style>
 </head>
 <body>
   <header class="topbar"><div class="topbar-inner">
-    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span><span style="font-size:10px;font-weight:800;background:rgba(255,255,255,.16);padding:4px 7px;border-radius:999px">v5.11.1</span></div>
+    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span><span style="font-size:10px;font-weight:800;background:rgba(255,255,255,.16);padding:4px 7px;border-radius:999px">v5.12</span></div>
     <div class="top-spacer"></div>
     <button class="icon-btn" id="auditInfoBtn" style="display:none" onclick="openInfo()">Audit Info</button>
   </div></header>
@@ -222,19 +227,19 @@
   <input type="file" id="submissionFile" accept=".qmod,application/json" multiple hidden onchange="importAuditorSubmissions(event)">
   <input type="file" id="partialMergeFile" accept=".qmod,application/json" multiple hidden onchange="mergePartialAuditFiles(event)">
   <input type="file" id="sopTemplateFile" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden onchange="importSopTemplate(event)">
-  <script src="audit-data.js?v=5.11.1"></script>
-  <script src="app.js?v=5.11.1"></script>
+  <script src="audit-data.js?v=5.12"></script>
+  <script src="app.js?v=5.12"></script>
 
   <script>
-  // Audit QMOD v5.11.1: explicitly install the current worker so old PWA caches cannot keep the UI stuck.
+  // Audit QMOD v5.12: explicitly install the current worker so old PWA caches cannot keep the UI stuck.
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg = await navigator.serviceWorker.register('./sw.js?v=5.11.1', { scope: './', updateViaCache: 'none' });
+        const reg = await navigator.serviceWorker.register('./sw.js?v=5.12', { scope: './', updateViaCache: 'none' });
         await reg.update();
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!sessionStorage.getItem('aqmod-sw-reloaded-v511')) {
-            sessionStorage.setItem('aqmod-sw-reloaded-v511','1');
+          if (!sessionStorage.getItem('aqmod-sw-reloaded-v512')) {
+            sessionStorage.setItem('aqmod-sw-reloaded-v512','1');
             location.reload();
           }
         });
