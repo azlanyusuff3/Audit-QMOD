@@ -177,15 +177,80 @@ function exportBackup(){download('Audit_QMOD_Backup_'+safeName()+'.json',new Blo
 function exportRecordBackup(id){const r=records.find(x=>x.id===id);if(r)download('Audit_QMOD_Backup_'+safeName(r)+'.json',new Blob([JSON.stringify({app:'Audit QMOD',version:3,type:'record',record:r},null,2)],{type:'application/json'}))}
 function exportAuditorSubmission(id){const r=records.find(x=>x.id===id);if(!r||r.recordType==='final')return;if(!r.info.stateOffice||!r.info.auditorName){alert('Set State Office and Auditor Name first.');return}const pkg=makeSubmissionPackage(r),name=submissionFilename(r,pkg.manifest.submissionId);download(name,new Blob([JSON.stringify(pkg)],{type:'application/json'}));toast('.qmod audit result saved')}
 async function exportAllBackup(){const all=await dbAll(),templates=(await dbTemplateAll());download('Audit_QMOD_All_Records.json',new Blob([JSON.stringify({app:'Audit QMOD',version:5.12,type:'bundle',records:all,sopTemplates:templates},null,2)],{type:'application/json'}))}
-async function importOneRecord(r,{asSubmission=false,manifest=null,fileName=''}={}){r=clone(r);if(asSubmission&&manifest?.submissionId){const dup=records.find(x=>x.importManifest?.submissionId===manifest.submissionId);if(dup)return {duplicate:true,record:dup}}const existing=records.find(x=>x.id===r.id);if(existing||asSubmission){r.sourceRecordId=r.id;r.id=uuid()}r.recordType=r.recordType||'auditor';r.importedAt=now();if(manifest)r.importManifest={...manifest,fileName};r.deletedAt=null;r.updatedAt=r.updatedAt||now();for(const v of Object.values(r.responses||{})){v.photos=v.photos||[];v.updatedAt=v.updatedAt||r.updatedAt}await dbPut(r);return {duplicate:false,record:r}}
-function importBackup(ev){const f=ev.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=async()=>{try{const x=JSON.parse(rd.result);if(x.type==='bundle'){for(const r of x.records||[])await importOneRecord(r);for(const t of x.sopTemplates||[])await dbTemplatePut(normalizeSopTemplate(t));await refreshSopTemplates()}else if(x.type==='record')await importOneRecord(x.record);else if(x.type==='auditor_submission')await importOneRecord(x.record,{asSubmission:true,manifest:x.manifest});else if(x.info&&x.responses)await importOneRecord(x);else throw 0;await refreshRecords();state=null;currentView='records';render();toast('Backup imported')}catch(e){alert('Invalid Audit QMOD backup file.')}};rd.readAsText(f);ev.target.value=''}
+function validateRecordPayload(record){
+  if(!record||typeof record!=='object'||Array.isArray(record)||!record.info||typeof record.info!=='object'||Array.isArray(record.info)||!record.responses||typeof record.responses!=='object'||Array.isArray(record.responses))throw new Error('Invalid audit record structure (info/responses).');
+  if(record.recordType&&!['auditor','final'].includes(record.recordType))throw new Error('Invalid audit record type.');
+  if(record.id!==undefined&&typeof record.id!=='string')throw new Error('Invalid audit record ID.');
+  for(const [k,r] of Object.entries(record.responses)){
+    if(!k.includes('::')||!r||typeof r!=='object'||Array.isArray(r))throw new Error('Invalid checklist response: '+k);
+    if(r.status!==undefined&&!['','Complied','Not Complied','N/A'].includes(r.status))throw new Error('Invalid checklist status: '+k);
+    if(r.photos!==undefined&&!Array.isArray(r.photos))throw new Error('Invalid photo list: '+k);
+    if((r.photos||[]).some(p=>!p||typeof p!=='object'||typeof p.dataUrl!=='string'||!/^data:image\/(jpeg|png|webp);base64,/i.test(p.dataUrl)))throw new Error('Invalid photo evidence: '+k);
+  }
+  return true;
+}
+async function importOneRecord(r,{asSubmission=false,manifest=null,fileName=''}={}){
+  validateRecordPayload(r);
+  r=clone(r);
+  if(asSubmission&&r.recordType==='final')throw new Error('Final reports cannot be imported as auditor submissions.');
+  if(asSubmission&&manifest?.submissionId){const dup=records.find(x=>x.importManifest?.submissionId===manifest.submissionId);if(dup)return {duplicate:true,record:dup}}
+  const existing=records.find(x=>x.id===r.id);
+  if(existing||asSubmission||!r.id){r.sourceRecordId=r.id||'';r.id=uuid()}
+  r.recordType=r.recordType||'auditor';
+  // Only a team submission is made read-only. A restored working audit stays editable.
+  if(asSubmission)r.importedAt=now();
+  if(manifest)r.importManifest={...manifest,fileName};
+  r.deletedAt=null;r.updatedAt=r.updatedAt||now();
+  for(const v of Object.values(r.responses||{})){v.photos=v.photos||[];v.updatedAt=v.updatedAt||r.updatedAt}
+  await dbPut(r);return {duplicate:false,record:r};
+}
+function importBackup(ev){
+  const f=ev.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=async()=>{
+    try{
+      const x=JSON.parse(rd.result);
+      if(x.type==='bundle'){
+        if(!Array.isArray(x.records))throw new Error('Backup does not contain a valid records list.');
+        const incoming=x.records.filter(r=>r&&!r.deletedAt);incoming.forEach(validateRecordPayload);
+        const templates=x.sopTemplates||[];
+        if(!Array.isArray(templates)||templates.some(t=>!t||typeof t!=='object'||!Array.isArray(t.items)))throw new Error('Invalid template backup.');
+        const idMap=new Map(),used=new Set(records.map(r=>r.id));
+        const prepared=incoming.map(orig=>{
+          const r=clone(orig),oldId=r.id;
+          let nextId=uuid();while(used.has(nextId))nextId=uuid();
+          used.add(nextId);r.id=nextId;
+          if(oldId&&!idMap.has(oldId))idMap.set(oldId,nextId);
+          r.deletedAt=null;return r;
+        });
+        for(const r of prepared){if(Array.isArray(r.sourceIds))r.sourceIds=r.sourceIds.map(id=>idMap.get(id)||id);await dbPut(r)}
+        for(const t of templates)await dbTemplatePut(normalizeSopTemplate(t));
+        await refreshSopTemplates();
+      }else if(x.type==='record')await importOneRecord(x.record);
+      else if(x.type==='auditor_submission')await importOneRecord(x.record,{asSubmission:true,manifest:x.manifest});
+      else if(x.info&&x.responses)await importOneRecord(x);
+      else throw new Error('Unsupported backup format.');
+      await refreshRecords();state=null;currentView='records';render();toast('Backup imported');
+    }catch(e){console.error('Backup import failed',e);alert('Could not import backup: '+(e?.message||'Invalid file'))}
+  };
+  rd.readAsText(f);ev.target.value='';
+}
 async function importAuditorSubmissions(ev){const files=[...ev.target.files];if(!files.length)return;let ok=0,bad=0,dup=0;for(const f of files){try{const txt=await f.text(),x=JSON.parse(txt);if(x.type!=='auditor_submission'||!x.record)throw 0;const out=await importOneRecord(x.record,{asSubmission:true,manifest:x.manifest,fileName:f.name});out?.duplicate?dup++:ok++}catch(e){bad++}}await refreshRecords();currentView='team';state=null;render();toast(ok+' team result(s) imported'+(dup?' • '+dup+' duplicate skipped':'')+(bad?' • '+bad+' invalid':''));ev.target.value=''}
 
 function responseHasData(r){return !!(r&&(r.status||r.evidence||r.auditorRemark||r.remark||(r.photos||[]).length))}
 function responseRichness(r){if(!r)return 0;return (r.status?100:0)+(r.evidence?12:0)+(r.auditorRemark?12:0)+(r.remark?8:0)+Math.min(20,(r.photos||[]).length*4)}
 function mergeIdentitySummary(r){return {stateOffice:String(r?.info?.stateOffice||'').trim(),year:String(r?.info?.year||'').trim(),auditDocument:String(r?.info?.auditDocument||'').trim(),templateKey:templateFingerprintKey(r)}}
 function sameMergeIdentity(a,b){const x=mergeIdentitySummary(a),y=mergeIdentitySummary(b);return x.stateOffice===y.stateOffice&&x.year===y.year&&x.auditDocument===y.auditDocument&&x.templateKey===y.templateKey}
-function parsePartialAuditObject(x,fileName=''){if(x?.type==='auditor_submission'&&x.record)return {record:x.record,manifest:x.manifest||{},fileName};if(x?.type==='record'&&x.record)return {record:x.record,manifest:{},fileName};if(x?.info&&x?.responses)return {record:x,manifest:{},fileName};throw new Error('Not an Audit QMOD audit file')}
+function parsePartialAuditObject(x,fileName=''){
+  let part=null;
+  if(x?.type==='auditor_submission'&&x.record)part={record:x.record,manifest:x.manifest||{},fileName};
+  else if(x?.type==='record'&&x.record)part={record:x.record,manifest:{},fileName};
+  else if(x?.info&&x?.responses)part={record:x,manifest:{},fileName};
+  if(!part)throw new Error('Not an Audit QMOD audit file');
+  validateRecordPayload(part.record);
+  if(part.record.recordType==='final')throw new Error('Final Review records cannot be merged as partial auditor audits');
+  return part;
+}
 function dedupePhotos(arr){const seen=new Set(),out=[];for(const p of arr||[]){const key=p?.id||`${p?.name||''}|${String(p?.dataUrl||'').slice(-180)}`;if(!key||seen.has(key))continue;seen.add(key);out.push(clone(p))}return out.slice(0,6)}
 function mergeResponseCandidates(candidates,key,conflicts){const active=candidates.filter(c=>responseHasData(c.resp));if(!active.length)return null;active.sort((a,b)=>responseRichness(b.resp)-responseRichness(a.resp)||ts(b.resp?.updatedAt)-ts(a.resp?.updatedAt)||ts(b.record?.updatedAt)-ts(a.record?.updatedAt));const winner=active[0],out=clone(winner.resp);out.photos=dedupePhotos(active.flatMap(c=>c.resp?.photos||[]));for(const field of ['status','evidence','auditorRemark','remark']){const vals=active.map(c=>({value:String(c.resp?.[field]||'').trim(),fileName:c.fileName,updatedAt:c.resp?.updatedAt||c.record?.updatedAt||''})).filter(x=>x.value);if(!vals.length)continue;if(!String(out[field]||'').trim())out[field]=vals[0].value;const unique=[...new Set(vals.map(x=>x.value))];if(unique.length>1){vals.sort((a,b)=>ts(b.updatedAt)-ts(a.updatedAt));out[field]=vals[0].value;conflicts.push({key,field,chosen:vals[0].fileName,alternatives:vals.slice(1).map(x=>x.fileName)})}}
 out.updatedAt=active.map(c=>c.resp?.updatedAt||c.record?.updatedAt).sort((a,b)=>ts(b)-ts(a))[0]||now();return out}
