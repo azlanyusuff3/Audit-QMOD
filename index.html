@@ -211,6 +211,7 @@
     .review-trail{border-left:4px solid #d8a928}
 </style>
   <link rel="stylesheet" href="ui-v5.13.css?v=5.13">
+  <link rel="stylesheet" href="ui-mobile-v5.14.css?v=5.14">
 </head>
 <body class="aqmodern">
   <aside class="aq-sidebar" id="aqSidebar" aria-label="Main navigation">
@@ -257,17 +258,18 @@
   <script src="audit-data.js?v=5.12"></script>
   <script src="app.js?v=5.13"></script>
   <script src="ui-v5.13.js?v=5.13"></script>
+  <script src="ui-mobile-v5.14.js?v=5.14"></script>
 
   <script>
   // Audit QMOD v5.13: install refreshed application shell the current worker so old PWA caches cannot keep the UI stuck.
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg = await navigator.serviceWorker.register('./sw.js?v=5.13', { scope: './', updateViaCache: 'none' });
+        const reg = await navigator.serviceWorker.register('./sw.js?v=5.14', { scope: './', updateViaCache: 'none' });
         await reg.update();
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!sessionStorage.getItem('aqmod-sw-reloaded-v513')) {
-            sessionStorage.setItem('aqmod-sw-reloaded-v513','1');
+          if (!sessionStorage.getItem('aqmod-sw-reloaded-v514')) {
+            sessionStorage.setItem('aqmod-sw-reloaded-v514','1');
             location.reload();
           }
         });
