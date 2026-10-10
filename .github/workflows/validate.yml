@@ -1,0 +1,25 @@
+name: Audit QMOD validation
+on:
+  push:
+    branches: [main, 'fix/**']
+  pull_request:
+    branches: [main]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify JavaScript syntax
+        run: |
+          node --check app.js
+          node --check audit-data.js
+          node --check sw.js
+      - name: Verify expected release components
+        run: |
+          test -f Audit_QMOD_Master_Templates.xlsx
+          test -f Audit_QMOD_SOP_Template.xlsx
+          test -f index.html
+          test -f manifest.json
