@@ -210,15 +210,42 @@
     .review-edit-stamp{margin-top:8px;padding:7px 9px;border-radius:9px;background:#fff8e8;border:1px solid #f0d79b;color:#76570f;font-size:10px;font-weight:800}
     .review-trail{border-left:4px solid #d8a928}
 </style>
+  <link rel="stylesheet" href="ui-v5.13.css?v=5.13">
 </head>
-<body>
-  <header class="topbar"><div class="topbar-inner">
-    <div class="brand"><img src="icon-192.png" alt=""><span>Audit QMOD</span><span style="font-size:10px;font-weight:800;background:rgba(255,255,255,.16);padding:4px 7px;border-radius:999px">v5.12</span></div>
-    <div class="top-spacer"></div>
-    <button class="icon-btn" id="auditInfoBtn" style="display:none" onclick="openInfo()">Audit Info</button>
-  </div></header>
-  <main class="container" id="app"></main>
-
+<body class="aqmodern">
+  <aside class="aq-sidebar" id="aqSidebar" aria-label="Main navigation">
+    <div class="aq-sidebar-brand"><img src="icon-192.png" alt=""><div><strong>Audit QMOD</strong><small>Quality Assurance Workspace</small></div></div>
+    <div class="aq-sidebar-group">WORKSPACE</div>
+    <nav aria-label="Application sections">
+      <button type="button" class="aq-nav" data-aq-page="dashboard" onclick="uiGo('dashboard')"><span class="aq-nav-icon">⌂</span>Dashboard</button>
+      <button type="button" class="aq-nav" data-aq-page="new" onclick="uiGo('new')"><span class="aq-nav-icon">＋</span>New Audit</button>
+      <button type="button" class="aq-nav" data-aq-page="records" onclick="uiGo('records')"><span class="aq-nav-icon">▤</span>My Audits</button>
+      <button type="button" class="aq-nav" data-aq-page="team" onclick="uiGo('team')"><span class="aq-nav-icon">◇</span>Final Review</button>
+      <button type="button" class="aq-nav" data-aq-page="reports" onclick="uiGo('reports')"><span class="aq-nav-icon">▦</span>Reports &amp; Export</button>
+      <button type="button" class="aq-nav" data-aq-page="backup" onclick="uiGo('backup')"><span class="aq-nav-icon">⇩</span>Backup &amp; Restore</button>
+      <div class="aq-sidebar-group">MANAGEMENT</div>
+      <button type="button" class="aq-nav" data-aq-page="templates" onclick="uiGo('templates')"><span class="aq-nav-icon">☷</span>Audit Templates</button>
+      <button type="button" class="aq-nav" data-aq-page="settings" onclick="uiGo('settings')"><span class="aq-nav-icon">⚙</span>Settings</button>
+    </nav>
+    <div class="aq-sidebar-bottom"><div class="aq-connect"><i class="aq-led"></i><span id="aqConnectivity">Offline-ready</span></div><small>v5.13 · Audits stored locally</small></div>
+  </aside>
+  <div class="aq-sidebar-overlay" onclick="uiToggleMenu(false)" aria-hidden="true"></div>
+  <div class="aq-workspace">
+    <header class="topbar"><div class="topbar-inner">
+      <button type="button" class="aq-menu" aria-label="Open navigation menu" onclick="uiToggleMenu()">☰</button>
+      <div class="aq-top-titles"><strong id="aqTopTitle">Dashboard</strong><small id="aqTopSubtitle">Offline-first quality audit workspace</small></div>
+      <label class="aq-search"><span aria-hidden="true">⌕</span><input id="aqGlobalSearch" aria-label="Search local audits" placeholder="Search audits, State Office, auditor..." oninput="uiGlobalSearch(this.value)" onkeydown="uiGlobalSearchKey(event)" autocomplete="off"></label>
+      <button class="icon-btn" id="auditInfoBtn" style="display:none" onclick="openInfo()">Edit Audit Info</button>
+      <div class="aq-user"><div class="aq-avatar" aria-hidden="true">AQ</div><div><b>QMOD Audit</b><span>Local workspace</span></div></div>
+    </div></header>
+    <main class="container" id="app" aria-live="polite"></main>
+  </div>
+  <nav class="aq-mobile-nav" aria-label="Mobile navigation">
+    <button type="button" data-aq-page="dashboard" onclick="uiGo('dashboard')"><b>⌂</b>Home</button>
+    <button type="button" data-aq-page="records" onclick="uiGo('records')"><b>▤</b>Audits</button>
+    <button type="button" data-aq-page="team" onclick="uiGo('team')"><b>◇</b>Review</button>
+    <button type="button" data-aq-page="reports" onclick="uiGo('reports')"><b>▦</b>Reports</button>
+  </nav>
   <div class="modal" id="infoModal"><div class="modal-card"><div class="modal-head"><div><div class="eyebrow">Audit record</div><h2>Audit Information</h2></div><button class="close" onclick="closeInfo()">✕</button></div><div class="form-grid" id="infoForm"></div><div class="modal-actions"><button class="btn outline" onclick="closeInfo()">Cancel</button><button class="btn primary" onclick="saveInfo()">Save Audit Info</button></div></div></div>
   <div class="lightbox" id="lightbox" onclick="closeLightbox(event)"><button class="closebox" onclick="closeLightbox(event,true)">✕</button><div class="lightbox-inner"><img id="lightboxImg" alt="Evidence"><p id="lightboxCaption"></p></div></div>
 
@@ -228,18 +255,19 @@
   <input type="file" id="partialMergeFile" accept=".qmod,application/json" multiple hidden onchange="mergePartialAuditFiles(event)">
   <input type="file" id="sopTemplateFile" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden onchange="importSopTemplate(event)">
   <script src="audit-data.js?v=5.12"></script>
-  <script src="app.js?v=5.12"></script>
+  <script src="app.js?v=5.13"></script>
+  <script src="ui-v5.13.js?v=5.13"></script>
 
   <script>
-  // Audit QMOD v5.12: explicitly install the current worker so old PWA caches cannot keep the UI stuck.
+  // Audit QMOD v5.13: install refreshed application shell the current worker so old PWA caches cannot keep the UI stuck.
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg = await navigator.serviceWorker.register('./sw.js?v=5.12', { scope: './', updateViaCache: 'none' });
+        const reg = await navigator.serviceWorker.register('./sw.js?v=5.13', { scope: './', updateViaCache: 'none' });
         await reg.update();
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!sessionStorage.getItem('aqmod-sw-reloaded-v512')) {
-            sessionStorage.setItem('aqmod-sw-reloaded-v512','1');
+          if (!sessionStorage.getItem('aqmod-sw-reloaded-v513')) {
+            sessionStorage.setItem('aqmod-sw-reloaded-v513','1');
             location.reload();
           }
         });
