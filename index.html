@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#123b63" />
+  <meta name="theme-color" content="#1c3234" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>Audit QMOD</title>
@@ -212,6 +212,7 @@
 </style>
   <link rel="stylesheet" href="ui-v5.13.css?v=5.13">
   <link rel="stylesheet" href="ui-mobile-v5.14.css?v=5.14">
+  <link rel="stylesheet" href="ui-field-v5.15.css?v=5.15">
 </head>
 <body class="aqmodern">
   <aside class="aq-sidebar" id="aqSidebar" aria-label="Main navigation">
@@ -219,16 +220,16 @@
     <div class="aq-sidebar-group">WORKSPACE</div>
     <nav aria-label="Application sections">
       <button type="button" class="aq-nav" data-aq-page="dashboard" onclick="uiGo('dashboard')"><span class="aq-nav-icon">⌂</span>Dashboard</button>
-      <button type="button" class="aq-nav" data-aq-page="new" onclick="uiGo('new')"><span class="aq-nav-icon">＋</span>New Audit</button>
+      <button type="button" class="aq-nav" data-aq-page="new" onclick="uiGo('new')"><span class="aq-nav-icon">＋</span>Start Audit</button>
       <button type="button" class="aq-nav" data-aq-page="records" onclick="uiGo('records')"><span class="aq-nav-icon">▤</span>My Audits</button>
-      <button type="button" class="aq-nav" data-aq-page="team" onclick="uiGo('team')"><span class="aq-nav-icon">◇</span>Final Review</button>
+      <button type="button" class="aq-nav" data-aq-page="team" onclick="uiGo('team')"><span class="aq-nav-icon">◇</span>Review / Evaluate</button>
       <button type="button" class="aq-nav" data-aq-page="reports" onclick="uiGo('reports')"><span class="aq-nav-icon">▦</span>Reports &amp; Export</button>
       <button type="button" class="aq-nav" data-aq-page="backup" onclick="uiGo('backup')"><span class="aq-nav-icon">⇩</span>Backup &amp; Restore</button>
       <div class="aq-sidebar-group">MANAGEMENT</div>
       <button type="button" class="aq-nav" data-aq-page="templates" onclick="uiGo('templates')"><span class="aq-nav-icon">☷</span>Audit Templates</button>
       <button type="button" class="aq-nav" data-aq-page="settings" onclick="uiGo('settings')"><span class="aq-nav-icon">⚙</span>Settings</button>
     </nav>
-    <div class="aq-sidebar-bottom"><div class="aq-connect"><i class="aq-led"></i><span id="aqConnectivity">Offline-ready</span></div><small>v5.13 · Audits stored locally</small></div>
+    <div class="aq-sidebar-bottom"><div class="aq-connect"><i class="aq-led"></i><span id="aqConnectivity">Offline-ready</span></div><small>v5.15 · Audits stored locally</small></div>
   </aside>
   <div class="aq-sidebar-overlay" onclick="uiToggleMenu(false)" aria-hidden="true"></div>
   <div class="aq-workspace">
@@ -259,16 +260,17 @@
   <script src="app.js?v=5.13"></script>
   <script src="ui-v5.13.js?v=5.13"></script>
   <script src="ui-mobile-v5.14.js?v=5.14"></script>
+  <script src="ui-field-v5.15.js?v=5.15"></script>
 
   <script>
   // Audit QMOD v5.13: install refreshed application shell the current worker so old PWA caches cannot keep the UI stuck.
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg = await navigator.serviceWorker.register('./sw.js?v=5.14', { scope: './', updateViaCache: 'none' });
+        const reg = await navigator.serviceWorker.register('./sw.js?v=5.15', { scope: './', updateViaCache: 'none' });
         await reg.update();
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!sessionStorage.getItem('aqmod-sw-reloaded-v514')) {
+          if (!sessionStorage.getItem('aqmod-sw-reloaded-v515')) {
             sessionStorage.setItem('aqmod-sw-reloaded-v514','1');
             location.reload();
           }
